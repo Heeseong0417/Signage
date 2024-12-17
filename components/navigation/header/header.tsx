@@ -18,7 +18,7 @@ const Header= ({children}:any)=>{
   ]
   const adminmenu = [
     {title:"대시보드",link:"/Home/ADadmin/Dashboard",sub:[]},
-    {title:"콘텐츠운영",link:"/Home/data",sub:[{title:"스케쥴러",link:"/Home/ADadmin/Scheduler"},{title:"광고관리",link:"/Home/ADadmin/Management"},{title:"콘텐츠관리",link:"/Home/data"}]},
+    {title:"콘텐츠운영",link:"/Home/data",sub:[{title:"스케쥴러",link:"/Home/ADadmin/Scheduler"},{title:"광고관리",link:"/Home/ADadmin/Management"},{title:"콘텐츠관리",link:"/Home/ADadmin/Contents"}]},
     {title:"빅데이터",link:"/Home/data",sub:[]},
     {title:"시스템관리",link:"/Home/data",sub:[{title:"유저관리",link:"/Home/data"},{title:"사이트관리",link:"/Home/data"},{title:"매출관리",link:"/Home/data"},{title:"로그관리",link:"/Home/data"},{title:"광고안내관리",link:"/Home/data"}]},
     {title:"커뮤니티",link:"/Home/data",sub:[{title:"공지사항",link:""},{title:"Q&A 게시판",link:""}]}

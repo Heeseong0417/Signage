@@ -20,12 +20,21 @@ import { GridInputText, GridContainer, GridItem, GridTitle, GridInputSelect, Gri
 import CustomDialogImage from "../../../../components/popup/popupImage";
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
-
+const boxlist:any =   [
+  {title:"보도측(미사역 서편)",subtitle:"800 x 1280px",image:i1280,ratio:[800,1280]},
+  {title:"보도측(미사역 동편)",subtitle:"800 x 1280px",image:i1280,ratio:[800,1280]},
+  {title:"차도측",subtitle:"800 x 2560px",image:i2560,ratio:[800,2580]}
+  ]
+const optimizationlist =   [
+  {title:"최대화",subtitle:"",image:Max},
+  {title:"최소화",subtitle:"",image:Min},
+  {title:"화면 맞춤",subtitle:"",image:Fix}
+  ]
 const Page=()=>{
 const [user, setuser] = useState<any>({password:"",repassword:""
 
 })
-const [option, setoption] = useState({name:"",class:"",inventory:"",selectfile:[],optimization:"",date:"",datarange:[
+const [option, setoption] = useState({name:"",class:"",inventory:boxlist[0].title,selectfile:[],optimization:optimizationlist[0].title,date:"",datarange:[
   {
     startDate: new Date(),
     endDate: addDays(new Date(), 7),
@@ -77,7 +86,7 @@ const openDialog = () => setShowDialog(true);
 const closeDialog = () => setShowDialog(false);
 const [digText, setdigText] = useState("")
 const [selectRole, setselectRole] = useState("일반회원")
-const [Imagelist, setImagelist] = useState<File[]>([]);
+const [Imagelist, setImagelist] = useState<any[]>([]);
 const [date_range, setdate_range] = useState([
   {
     startDate: new Date(),
@@ -125,7 +134,7 @@ const handleDateChange = (ranges: any) => {
 
 
     return (<>
-
+{JSON.stringify(option)}
     <div className="h-full w-[90%] mx-[5%] lg:w-[70%] lg:mx-[15%] my-[5%] flex flex-col justify-center items-center ">
 <StepTtile title={"광고신청"} subtitle={"APPLICATION FOR AD"} subtitlecolor={"#1292F5"}/>
       <StepNav list={["옥외광고","광고신청"]}/>
@@ -147,12 +156,8 @@ const handleDateChange = (ranges: any) => {
   <GridItem title={"구좌선택"}>
     <div className="w-full h-full ">
 
-<GridImageCheckbox classImage={"w-[9rem] h-[11.8rem] py-[0.2rem]"} onChange={(e:any)=>setoption((prev)=>{return{...prev,inventory:e}})} boxlist={
-  [
-    {title:"보도측(미사역 서편)",subtitle:"800 x 1280px",image:i1280},
-    {title:"보도측(미사역 동편)",subtitle:"800 x 1280px",image:i1280},
-    {title:"차도측",subtitle:"800 x 2560px",image:i2560}
-    ]}/>
+<GridImageCheckbox checknum={"2"} classImage={"w-[9rem] h-[11.8rem] py-[0.2rem]"} onChange={(e:any)=>setoption((prev)=>{return{...prev,inventory:e}})} boxlist={
+boxlist}/>
     </div>
   </GridItem>
   <GridItem title={"파일선택"}>
@@ -165,11 +170,7 @@ const handleDateChange = (ranges: any) => {
 
 
   <GridImageCheckbox onChange={(e:any)=>setoption((prev)=>{return{...prev,optimization:e}})} classImage={"p-[0.4rem]"} className={"bg-[#C7C9CB] h-[6rem] w-[5rem]"} boxlist={
-  [
-    {title:"최대화",subtitle:"",image:Max},
-    {title:"최소화",subtitle:"",image:Min},
-    {title:"화면 맞춤",subtitle:"",image:Fix}
-    ]}/>
+optimizationlist}/>
   </GridItem>
   <GridItem title={"기간 설정"}>
 
@@ -188,11 +189,11 @@ const handleDateChange = (ranges: any) => {
 
 
 </div>
-    
+
   </GridItem>
 </GridContainer>
 <button
-     
+     onClick={()=>setShowDialog(true)}
      className="my-2 px-4 py-1 min-w-[5rem] bg-[#1292F5] text-white rounded shadow hover:bg-blue-600"
    >
      확인
@@ -210,6 +211,9 @@ const handleDateChange = (ranges: any) => {
         isOpen={showDialog}
         onClose={closeDialog}
         title={digText}
+        ratio={boxlist.find((i: { title: string; })=>i.title===option.inventory )?.["ratio"]}
+        optimization={option.optimization}
+        image={Imagelist[0]}
         content=""
       />
 

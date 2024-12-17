@@ -9,7 +9,9 @@ const CustomDialogImage=({
     onClose,
     title = 'Custom Dialog',
     content = 'This is a custom dialog.',
-    image
+    image,
+    optimization,
+    ratio
   }: any) => {
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [dragging, setDragging] = useState(false);
@@ -38,7 +40,27 @@ const startDrag = (e: React.MouseEvent<HTMLDivElement>) => {
   const endDrag = () => {
     setDragging(false);
   };
+  const [size, setSize] = useState({ width: 0, height: 0 });
 
+  const handleImageLoad = (event: any) => {
+    const { naturalWidth, naturalHeight } = event.target;
+    setSize({ width: naturalWidth, height: naturalHeight });
+  };
+  function calculatePercentage(width: number, height: number) {
+    const total = width + height;
+  
+    const wPercent = (width / total) ;
+    const hPercent = (height / total) ;
+  
+    return {
+      w: parseFloat(wPercent.toFixed(2)),
+      h: parseFloat(hPercent.toFixed(2))
+    };
+  }
+  
+  const x = size.width*calculatePercentage(ratio[0],ratio[1]).w
+  const y = size.height*calculatePercentage(ratio[0],ratio[1]).h
+  const lxy = calculatePercentage(x,y)
   return (
     isOpen && (
       <div
@@ -54,7 +76,7 @@ const startDrag = (e: React.MouseEvent<HTMLDivElement>) => {
         <Dialog
           onDismiss={onClose}
           aria-label="Custom Dialog"
-          className="fixed top-[30%] left-[calc(50%_-12rem)] w-[15rem] lg:w-[24rem] max-w-full p-0 m-0 bg-white rounded-lg shadow-lg"
+          className="z-[9999] fixed top-[5%]  left-[5%] lg:left-[35%] w-[90%] lg:w-[30%]  min-h-[500px] h-[80%] max-w-full p-0 m-0 bg-white rounded-lg shadow-lg flex flex-col overflow-auto "
         >
           {/* 헤더 */}
           <div
@@ -71,13 +93,24 @@ const startDrag = (e: React.MouseEvent<HTMLDivElement>) => {
           </div>
 
           {/* 본문 */}
-          <div className="p-6 w-[calc(100%_-3rem)] flex flex-col items-center justify-center text-center">
+          
+          <div className="p-6 h-full w-[calc(100%_-3rem)] flex flex-col items-center justify-center text-center over-flow-auto">
+   
             <h2 className="text-sm font-bold mb-4">{title}</h2>
-            <Image className={`${image}`} fill alt="" src={image}/>
-            <p className="text-gray-700 mb-4">{content}</p>
+            <div className="w-full h-full flex flex-col items-center justify-center bg-darknavy ">
+            <div style={{width:ratio[0]*(ratio[1]>2000?0.1: 0.3), height:ratio[1]*(ratio[1]>2000?0.1: 0.3)}} className={`overflow-y-auto flex justify-center items-center bg-white`}>
+             <img 
+             onLoad={handleImageLoad}
+
+             style={{/**width:`${lxy.w*100}%`,height:`${lxy.h*100}%`,**/objectFit:optimization==="최대화"?"cover":optimization==="최소화"?"scale-down":"contain"}} className={`bg-white w-full h-full`} alt="" src={image}/>  
+            </div>
+            </div>
+            <p>*실제 디스플레이에 표시될 콘텐츠의 비율입니다.</p>
+ 
           </div>
 
           {/* 확인 버튼 */}
+          
           <div className="flex justify-center py-2 space-x-2">
           <button
               onClick={onClose}
