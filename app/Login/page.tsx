@@ -7,6 +7,8 @@ import PU from "../../components/popup/popup"
 import { Dialog, } from "@reach/dialog";
 import CustomDialog from "../../components/popup/popup";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+import  {IP, headers } from "../../config/IP";
 
 const Login=()=>{
 const [user, setuser] = useState<any>({userId:"",password:""
@@ -50,12 +52,40 @@ const [userConvertList, setuserConvertList] = useState<any>({
 const InputText=(typename:any,value:any)=>{
   setuser((prev:any)=>{return{...prev,[typename]:value}})
 }  
+
+
+const LoginAPI=()=>{
+
+  axios.post(IP+"/api/auth/login",{},{headers:headers,params:{
+    nickname:user.userId,password:user.password
+  }
+}).then((response)=>{
+   
+  if(response.data.result==="success"){
+alert("로그인 성공")
+  }else{
+    alert("로그인 실패")
+  }
+  })
+
+}
+
 const router = useRouter()
 const [showDialog, setShowDialog] = useState(false);
 const openDialog = () => setShowDialog(true);
 const closeDialog = () => setShowDialog(false);
 const [digText, setdigText] = useState("")
 const [selectRole, setselectRole] = useState("일반회원")
+
+
+useEffect(() => {
+  
+
+  return () => {
+    
+  }
+}, [])
+
     return (<>
 
     <div className="h-full w-[90%] mx-[5%] lg:w-[70%] lg:mx-[15%] my-[5%] flex flex-col justify-center items-center ">
@@ -80,7 +110,7 @@ const [selectRole, setselectRole] = useState("일반회원")
       }} className={`px-[1rem] py-[0.5rem] lg:py-[1rem] w-full max-w-[5rem] rounded-sm ${checkbox.idOverlab?"text-[#A1A1A1] bg-[#F0F0F0]":"text-white bg-[#485C6D]"} text-nowrap text-xs font-medium `}>{checkbox.idOverlab?"확인완료":"중복확인"}</button></>):
       keys==="phone"?(<><button onClick={()=>{
         setdigText(()=>"인증을 요청하였습니다!")
-        
+
         openDialog()
         showDialog
       }} className={`px-[1rem] py-[0.5rem] lg:py-[1rem] w-full max-w-[5rem] rounded-sm  text-nowrap text-xs font-medium text-white bg-[#485C6D]`}>중복확인</button></>):
@@ -99,9 +129,9 @@ const [selectRole, setselectRole] = useState("일반회원")
       </div>
       
       <div className="w-full flex flex-row items-center justify-center">
-      <button className={` bg-gradient-to-r rounded-md hover:scale-110 from-[#0F8EFD] to-[#3DD87A] hover:bg-[#0F8EFD] text-white w-[10rem] lg:min-w-[14rem] z-[55] px-[2rem] py-[0.8rem] my-[5%]  font-medium }`}>로그인</button>
-      
+      <button onClick={()=>LoginAPI()} className={` bg-gradient-to-r rounded-md hover:scale-110 from-[#0F8EFD] to-[#3DD87A] hover:bg-[#0F8EFD] text-white w-[10rem] lg:min-w-[14rem] z-[55] px-[2rem] py-[0.8rem] my-[5%]  font-medium }`}>로그인</button>
       </div>
+
       <div className="flex w-auto flex-row items-center justify-around ">
         <p onClick={()=>router.push("/Login/Findid")} className=" cursor-pointer text-xs font-bold mx-4">아이디 찾기</p>
         <div className="w-[1px] h-[1rem] bg-[#cccccc]"/>

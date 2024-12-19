@@ -8,7 +8,7 @@ const CustomDialogImage=({
     isOpen,
     onClose,
     title = 'Custom Dialog',
-    content = 'This is a custom dialog.',
+    content,
     image,
     optimization,
     ratio
@@ -110,7 +110,7 @@ const startDrag = (e: React.MouseEvent<HTMLDivElement>) => {
           </div>
 
           {/* 확인 버튼 */}
-          
+
           <div className="flex justify-center py-2 space-x-2">
           <button
               onClick={onClose}

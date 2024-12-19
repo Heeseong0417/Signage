@@ -36,14 +36,12 @@ const GridInputSelect = ({onChange,value,defaultValue,className,defaultText="Sel
     </select>
     </>)
     }
-    const GridInputFile = ({onChange,value,defaultValue,className,children,saveFile,setImage}:any)=>{
+    const GridInputFile = ({onChange,value,defaultValue,className,children,saveFile,saveTumbnail}:any)=>{
       const [images, setImages] = useState<any[]>([]);
-      const [imagelist,setImagelist] = useState<any>({img1:null,img2:null})
-      const [videos, setvideos] = useState<File[]>([]);
       const [images2, setImages2] = useState<any[]>([]);
       
       const [thumbnail, setThumbnail] = useState<string | null>(null);
-      const [thumbnail2, setThumbnail2] = useState<string | null>(null);
+
       const videoRef = useRef<HTMLVideoElement>(null);
      const xy:any = {
       "세로":{btn1:"",btn2:"hidden"},
@@ -51,42 +49,34 @@ const GridInputSelect = ({onChange,value,defaultValue,className,defaultText="Sel
       "세로 1:2":{btn1:"top-[10%] left-[calc(50%_-)]",btn2:"top-[58%] left-[colc(50%_-)]"},
       "세로 2:1":{btn1:"top-[33%] left-[calc(50%_-)]",btn2:"top-[80%] left-[colc(50%_-)]"},
     }
-      const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>,imgclass:String) => {
-        const files:any = e.target.files;
-        if (imgclass==="img1"){
-          if (files?.[0].type.startsWith('video/mp4')) {
-            setvideos((prev:any) => [...prev, URL.createObjectURL(files[0])])
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>,imgclass:String) => {
+      const files:any = e.target.files;
+      if (imgclass==="img1"){
+        if (files?.[0].type.startsWith('video/mp4')) {
+
+         
+
           ConvertMP4(files[0],setImages)
-          saveFile((prev: any) => [...prev, URL.createObjectURL(files[0])]);
-          setImagelist((prev: any)=>{return{...prev,img1:images}})
-        }else{
-          setImages((prev:any) => [...prev, URL.createObjectURL(files[0])])
+          ConvertMP4(files[0],saveTumbnail)
+        saveFile((prev: any) => [...prev, files[0]]);
+  
+     
+      }else {
+        setImages((prev:any) => [...prev, URL.createObjectURL(files[0])])
+        saveTumbnail((prev: any) => [...prev, URL.createObjectURL(files[0])])
+        saveFile((prev: any) => [...prev, files[0]]);
+      
+      }    
+      }
 
-          saveFile((prev: any) => [...prev, URL.createObjectURL(files[0])]);
-          setImagelist((prev: any)=>{return{...prev,img1:images}})
-        }    
-        }else{
-          if (files?.[0].type.startsWith('video/mp4')) {
-            setvideos((prev:any) => [...prev, URL.createObjectURL(files[0])])
-          ConvertMP4(files[0],setImages2)
-          saveFile((prev: any) => [...prev, URL.createObjectURL(files[0])]);
-          setImagelist((prev: any)=>{return{...prev,img2:images2}})
-        }else{
-          setImages((prev:any) => [...prev, URL.createObjectURL(files[0])])
-
-          saveFile((prev: any) => [...prev, URL.createObjectURL(files[0])]);
-          setImagelist((prev: any)=>{return{...prev,img2:images2}})
-        } 
-        }
-
-      };
+    };
 
 
       const handleRemoveImage = (index: number,imgclass:any) => {
         if(imgclass==="img1"){
         setImages((prev:any[]) => prev.filter((_, i) => i !== index));
         saveFile((prev: any[]) => prev.filter((_, i) => i !== index));
-        setImagelist((prev:any)=>{return{...prev,img1:images}})
+      
         }
        
       };
@@ -210,14 +200,10 @@ const GridInputSelect = ({onChange,value,defaultValue,className,defaultText="Sel
           </div>
         </>);
       };
-      const GridInputFileHorizontal = ({onChange,value,defaultValue,className,classImage,select_templete,select_image,children,setImage,saveTumbnail,saveTumbnail2,saveFile,saveFile2}:any)=>{
+      const GridInputFileHorizontal = ({classImage,select_templete,select_image,children,saveTumbnail1,saveTumbnail2,saveFile1,saveFile2}:any)=>{
         const [images, setImages] = useState<any[]>([]);
-        const [imagelist,setImagelist] = useState<any>({img1:null,img2:null})
-        const [videos, setvideos] = useState<File[]>([]);
         const [images2, setImages2] = useState<any[]>([]);
         
-        const [thumbnail, setThumbnail] = useState<string | null>(null);
-        const [thumbnail2, setThumbnail2] = useState<string | null>(null);
         const videoRef = useRef<HTMLVideoElement>(null);
        const xy:any = {
         "세로":{btn1:"",btn2:"hidden"},
@@ -230,30 +216,31 @@ const GridInputSelect = ({onChange,value,defaultValue,className,defaultText="Sel
           if (imgclass==="img1"){
             if (files?.[0].type.startsWith('video/mp4')) {
 
-              setvideos((prev:any) => [...prev, URL.createObjectURL(files[0])])
-              saveTumbnail()
+             
+
               ConvertMP4(files[0],setImages)
-            saveFile((prev: any) => [...prev, URL.createObjectURL(files[0])]);
+              ConvertMP4(files[0],saveTumbnail1)
+            saveFile1((prev: any) => [...prev, files?.[0]]);
       
-            setImagelist((prev: any)=>{return{...prev,img1:images}})
+         
           }else{
             setImages((prev:any) => [...prev, URL.createObjectURL(files[0])])
-
-            saveFile((prev: any) => [...prev, URL.createObjectURL(files[0])]);
-            setImagelist((prev: any)=>{return{...prev,img1:images}})
+            saveTumbnail1((prev: any) => [...prev, URL.createObjectURL(files[0])])
+            saveFile1((prev: any) => [...prev, files?.[0]]);
+          
           }    
           }else{
-            alert("v2")
             if (files?.[0].type.startsWith('video/mp4')) {
-              setvideos((prev:any) => [...prev, URL.createObjectURL(files[0])])
+           
             ConvertMP4(files[0],setImages2)
-            saveFile2((prev: any) => [...prev, URL.createObjectURL(files[0])]);
-            setImagelist((prev: any)=>{return{...prev,img2:images2}})
+            ConvertMP4(files[0],saveTumbnail2)
+            saveFile2((prev: any) => [...prev, files?.[0]]);
+           
           }else{
             setImages2((prev:any) => [...prev, URL.createObjectURL(files[0])])
-
-            saveFile2((prev: any) => [...prev, URL.createObjectURL(files[0])]);
-            setImagelist((prev: any)=>{return{...prev,img2:images2}})
+            saveTumbnail2((prev: any) => [...prev, URL.createObjectURL(files[0])])
+            saveFile2((prev: any) => [...prev, files?.[0]]);
+           
           } 
           }
  
@@ -263,12 +250,12 @@ const GridInputSelect = ({onChange,value,defaultValue,className,defaultText="Sel
         const handleRemoveImage = (index: number,imgclass:any) => {
           if(imgclass==="img1"){
           setImages((prev:any[]) => prev.filter((_, i) => i !== index));
-          saveFile((prev: any[]) => prev.filter((_, i) => i !== index));
-          setImagelist((prev:any)=>{return{...prev,img1:images}})
+          saveFile1((prev: any[]) => prev.filter((_, i) => i !== index));
+          saveTumbnail1((prev: any[]) => prev.filter((_, i) => i !== index));
           }else{
             setImages2((prev:any[]) => prev.filter((_, i) => i !== index));
             saveFile2((prev: any[]) => prev.filter((_, i) => i !== index));
-            setImagelist((prev:any)=>{return{...prev,img2:images}})
+            saveTumbnail2((prev: any[]) => prev.filter((_, i) => i !== index));
           }
          
         };
@@ -454,18 +441,7 @@ const GridInputSelect = ({onChange,value,defaultValue,className,defaultText="Sel
                   <p className="mt-2 text-sm text-gray-700">{image.name}</p>
                 </div>
               ))}
-{thumbnail}
-          
-              {thumbnail&&
-              <>
-              {thumbnail}
-              <img
-                    src={thumbnail}
-                    alt={`Uploaded`}
-                    crossOrigin="use-credentials"
-                    className="w-full h-[150px] object-cover rounded-md"
-                  /></>
-              }
+
                  
             </div>
           </div>
@@ -474,12 +450,13 @@ const GridInputSelect = ({onChange,value,defaultValue,className,defaultText="Sel
         </>);
       };
 const GridImageCheckbox =({checked,onChange,value,className,boxlist,classTitle,children,classImage,checknum}:any)=>{
-    const checkOnlyOne = (checkThis: HTMLElement) => {
-
+    const checkOnlyOne = (checkThis: any) => {
         const checkboxes:any = document.getElementsByName('test'+String(checknum))
         for (let i = 0; i < checkboxes.length; i++) {
           if (checkboxes[i] !== checkThis) {
             checkboxes[i].checked = false
+          }else{
+            checkboxes[i].checked = true
           }
         }
       }
@@ -506,16 +483,17 @@ const GridImageCheckbox =({checked,onChange,value,className,boxlist,classTitle,c
         </div>   
     </>)
 }
-const GridCheckboxList =({onChange,value,className,boxlist,children,classImage}:any)=>{
-    const checkOnlyOne = (checkThis: HTMLElement) => {
-
-        const checkboxes:any = document.getElementsByName('test')
-        for (let i = 0; i < checkboxes.length; i++) {
-          if (checkboxes[i] !== checkThis) {
-            checkboxes[i].checked = false
-          }
-        }
+const GridCheckboxList =({onChange,value,className,boxlist,children,classImage,checknum}:any)=>{
+  const checkOnlyOne = (checkThis: any) => {
+    const checkboxes:any = document.getElementsByName('test'+String(checknum))
+    for (let i = 0; i < checkboxes.length; i++) {
+      if (checkboxes[i] !== checkThis) {
+        checkboxes[i].checked = false
+      }else{
+        checkboxes[i].checked = true
       }
+    }
+  }
  
     return(<>
     <div className=" w-full h-full flex flex-row items-center justify-start space-x-2 overflow-x-auto">
@@ -523,7 +501,7 @@ const GridCheckboxList =({onChange,value,className,boxlist,children,classImage}:
         {boxlist.map((item:any)=>(<>
         <div>
        
-        <div className="flex flex-row w-full items-center space-x-2 pt-[0.5rem]"><input name="test" value={item.title} onChange={(e) => {
+        <div className="flex flex-row w-full items-center space-x-2 pt-[0.5rem]"><input name={`test${String(checknum)}`}  value={item.title} onChange={(e) => {
             onChange(e.target.value)
             checkOnlyOne(e.target)}} type="checkbox"></input>
             <p className="m-0">{item.title}</p> 
@@ -633,7 +611,19 @@ const GridTitle =({title,className,subtitle}:any)=>{
 
     </>)
 }
+const GridTitleBetween =({title,className,subtitle,children}:any)=>{
 
+  return(<>
+
+<div className={`w-full flex flex-col font-semibold items-center justify-start ${className} mt-[3%]`}>
+  <h1 className={`w-full text-[1.3rem] lg:text-[1.8rem] flex flex-row space-x-2 items-center justify-between ${className}`}><p className="m-0">{title}</p> {children}  {subtitle&&<p className={`m-0 border-2 text-[0.7rem] lg:text-[1rem] text-center  border-solid rounded-xl py-[0.25rem] px-[1rem] text-[#1292F5] border-[#1292F5]`} style={{color:subtitle==="반려"?"gray":"#1292F5",borderColor:subtitle==="반려"?"gray":"#1292F5"}}>{subtitle}</p>}</h1>
+
+<div className={`w-full h-[2px] bg-[#384958]  ${className}`}/>
+
+  </div>    
+
+  </>)
+}
 
 const GridItem =({title,className,children}:any)=>{
 
@@ -673,5 +663,5 @@ const GridItemCN =({title,className,children,className_title,className_item}:any
     </>)
 
 }
-export {Grid,GridTitle,GridItem,GridContainer,GridInputText,GridInputSelect,GridSlider,GridSideScroll,GridImageCheckbox,GridInputFile,GridInputFileHorizontal,GridCheckboxList,GridItemCN}
+export {Grid,GridTitle,GridTitleBetween,GridItem,GridContainer,GridInputText,GridInputSelect,GridSlider,GridSideScroll,GridImageCheckbox,GridInputFile,GridInputFileHorizontal,GridCheckboxList,GridItemCN}
 

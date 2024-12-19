@@ -32,6 +32,7 @@ import i1280 from "../../../../../public/800x1280.png"
 import Icon_movie from "../../../../../public/icon_movie.svg"
 import Icon_image from "../../../../../public/icon_image.svg"
 import DialogLink from "../../../../../components/popup/popuplink";
+import { Bluebutton, Darkgraybutton } from "../../../../../components/button/Button";
 const Page=()=>{
   // 현재 날짜 가져오기
 const today = new Date();
@@ -200,8 +201,8 @@ function paginateArray(array: string | any[], page: number, pageSize = 10) {
 {params.map((items:any)=>(<>
       <div style={{zoom:zoom}} className="grid grid-cols-5 mt-[2%] w-full ">
   <div className="w-full h-full flex items-center justify-center">   
-    <div className="p-2 w-full flex items-center justify-center bg-[#172731] py-[5%] rounded-md">       
-    <img className={`h-[10rem] text-sm`} src={params["썸네일"]} alt={""}/> 
+    <div className="p-2 w-full h-full flex items-center justify-center bg-[#172731] py-[5%] rounded-md">       
+    <img className={`h-[10rem] text-sm`} src={items["썸네일"]} alt={""}/> 
     </div>  
     </div>
   <div className="col-span-4  flex justify-between">
@@ -218,7 +219,7 @@ function paginateArray(array: string | any[], page: number, pageSize = 10) {
    
     </div>
     <div className="hidden  flex justify-start px-[4%] flex-col">
-      <button className="text-[white] bg-[#485C6D] mb-[20%] items-center text-center justify-center py-[0.6rem] px-[1rem] text-[1rem] rounded-md min-w-[8rem] mr-[2%] mt-[2%]">상세내역</button>
+      <Darkgraybutton >상세내역</Darkgraybutton>
       <div className="w-full flex justify-end ">
        { items["확장자"]==="image"? <Icon_image className={"h-12 w-12 object-cover"}/>:<Icon_movie className={"h-12 w-12 object-cover"}/>  }
       </div> 
@@ -234,15 +235,15 @@ function paginateArray(array: string | any[], page: number, pageSize = 10) {
   <div className="w-full flex justify-end space-x-2">
     {Object.keys(ADstateList[params[0]["진행상황"]]["btnlist"]).map((item_key)=>(<>
    
-    <button onClick={()=>{
+    <Darkgraybutton onClick={()=>{
       setShowDialog(()=>"1")
       setselectItem((prev:any)=>{return{...prev,title:item_key,content:ADstateList[params[0]["진행상황"]]["btnlist"][item_key]["title"]}})
-      }} className="bg-bggray flex items-center justify-center cursor-pointer text-white px-[2rem] py-[0.4rem] text-center rounded-md">{item_key}</button>
+      }} >{item_key}</Darkgraybutton>
     {params[0]["진행상황"]==="신청완료"&&
         <button onClick={()=>alert("수정")} className="bg-bggray flex items-center justify-center cursor-pointer text-white px-[2rem] py-[0.4rem] text-center rounded-md">수정</button>
     }
     </>))}
-    <button onClick={()=>router.push("/Home/ADuser/MyAD")} className="bg-bgblue flex items-center justify-center cursor-pointer text-white px-[2rem] py-[0.4rem] text-center rounded-md">확인</button>
+    <Bluebutton onClick={()=>router.push("/Home/ADuser/MyAD")} >확인</Bluebutton>
   </div>
 </section>
 

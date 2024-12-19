@@ -149,6 +149,7 @@ font-family: 'NanumSquareNeo', sans-serif !important;;
 /* Tody Cell에 배경색 주기 */
 .fc .fc-daygrid-day.fc-day-today {
   /**background-color: #e6895724;**/
+  position:relative;
   background-color: #E9F6FF;
   border : 2px #1292F5 solid;
   
