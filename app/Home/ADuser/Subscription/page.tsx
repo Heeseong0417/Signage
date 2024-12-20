@@ -188,7 +188,7 @@ const handleDateChange = (dates: [any, any],range?:any) => {
 
 
     return !DetailToggle?(<>
-{JSON.stringify(option)}
+
     <div className="h-full w-[90%] mx-[5%] lg:w-[70%] lg:mx-[15%] my-[5%] flex flex-col justify-center items-center ">
 <StepTtile title={"광고신청"} subtitle={"APPLICATION FOR AD"} subtitlecolor={"#1292F5"}/>
       <StepNav list={["옥외광고","광고신청"]}/>

@@ -56,9 +56,8 @@ const InputText=(typename:any,value:any)=>{
 
 const LoginAPI=()=>{
 
-  axios.post(IP+"/api/auth/login",{},{headers:headers,params:{
-    nickname:user.userId,password:user.password
-  }
+  axios.post(IP+"/api/auth/login",{nickname:user.userId, password:user.password},{headers:headers
+  
 }).then((response)=>{
    
   if(response.data.result==="success"){
